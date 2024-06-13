@@ -13,10 +13,10 @@ public class EmpleadoDAL {
         ArrayList<Empleado> lista = new ArrayList<>();
         Empleado empleado;
         try{
-            String sql = "SELECT Id, Nombre, Apellido, email, telefono FROM puesto";
-            Connection conexion = ComunDB.obtenerConexion();
+            String sql = "SELECT Id, Nombre, Apellido, email, telefono, puesto FROM Empleados";
+            Connection conexion = ComunDB.obtenerConnection();
             PreparedStatement ps = ComunDB.crearPreparedStatement(conexion, sql);
-            ResultSet rs = ComunDB.obtenerResultSet(ps);
+            ResultSet rs = ComunDB.resultSet(ps);
             while (rs.next()){
                 empleado = new Empleado(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
@@ -35,8 +35,8 @@ public class EmpleadoDAL {
     public static int guardar(Empleado empleado) throws SQLException{
         int result = 0;
         try {
-            String sql = "INSERT INTO empleados(Nombre, Apellido, email, telefono, puesto) VALUES(?, ?, ?, ?, ?)";
-            Connection conexion = ComunDB.obtenerConexion();
+            String sql = "INSERT INTO Empleados(Nombre, Apellido, email, telefono, puesto) VALUES(?, ?, ?, ?, ?)";
+            Connection conexion = ComunDB.obtenerConnection();
             PreparedStatement ps = ComunDB.crearPreparedStatement(conexion, sql);
             ps.setString(1, empleado.getNombre());
             ps.setString(2, empleado.getApellido());
@@ -55,8 +55,8 @@ public class EmpleadoDAL {
     public static int modificar(Empleado empleado) throws SQLException{
         int result = 0;
         try {
-            String sql = "UPDATE empleados SET Nombre = ?,  Apellido = ?, Email = ?, Telefono = ?, Puesto = ? WHERE Id = ?";
-            Connection conexion = ComunDB.obtenerConexion();
+            String sql = "UPDATE Empleados SET Nombre = ?,  Apellido = ?, Email = ?, Telefono = ?, Puesto = ? WHERE Id = ?";
+            Connection conexion = ComunDB.obtenerConnection();
             PreparedStatement ps = ComunDB.crearPreparedStatement(conexion, sql);
             ps.setString(1, empleado.getNombre());
             ps.setString(2, empleado.getApellido());
@@ -78,8 +78,8 @@ public class EmpleadoDAL {
     public static int eliminar(Empleado empleado) throws SQLException{
         int result = 0;
         try {
-            String sql = "DELETE FROM empleados WHERE Id = ?";
-            Connection conexion = ComunDB.obtenerConexion();
+            String sql = "DELETE FROM Empleados WHERE Id = ?";
+            Connection conexion = ComunDB.obtenerConnection();
             PreparedStatement ps = ComunDB.crearPreparedStatement(conexion, sql);
             ps.setInt(1, empleado.getId());
             result = ps.executeUpdate();
@@ -96,13 +96,13 @@ public class EmpleadoDAL {
         ArrayList<Empleado> lista = new ArrayList<>();
         Empleado est;
         try{
-            String sql = "SELECT id,Nombre, Apellido, Email, Telefono, Puesto FROM empleados WHERE id = ? or apellido like'%" +
-                    empleados.getApellido() + "%' or carrera like'%" +
+            String sql = "SELECT id,Nombre, Apellido, Email, Telefono, Puesto FROM Empleados WHERE id = ? or apellido like'%" +
+                    empleados.getApellido() + "%' or puesto like'%" +
                     empleados.getPuesto() + "%'";
-            Connection connection = ComunDB.obtenerConexion();
+            Connection connection = ComunDB.obtenerConnection();
             PreparedStatement ps = ComunDB.crearPreparedStatement(connection, sql);
             ps.setInt(1, empleados.getId());
-            ResultSet rs = ComunDB.obtenerResultSet(ps);
+            ResultSet rs = ComunDB.resultSet(ps);
             while (rs.next()){
                 est = new Empleado(rs.getInt(1), rs.getString(2),
                         rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
